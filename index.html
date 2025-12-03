@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>妙麗歲數計算機</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <main class="app-container">
+    <section class="card">
+      <h1 class="title">妙麗歲數計算機</h1>
+      <p class="subtitle">
+        輸入狗狗生日，換算出家中小可愛的真實人類歲數 ✨
+      </p>
+
+      <div class="form-group">
+        <label for="birthDate">狗狗出生日期</label>
+        <input
+          type="date"
+          id="birthDate"
+          max=""
+          aria-label="請選擇妙麗的出生日期"
+        />
+      </div>
+
+      <div class="button-row">
+        <button id="calcBtn" class="btn primary">開始計算</button>
+        <button id="clearBtn" class="btn ghost">清除</button>
+      </div>
+
+      <p class="hint">
+        計算公式：人類年齡 ≈ 16 × ln(狗的年齡) + 31（狗年齡以年為單位）<br />
+        資料來源：UC San Diego 與相關研究報導。
+      </p>
+    </section>
+  </main>
+
+  <!-- 結果對話框 -->
+  <div class="dialog-backdrop" id="resultDialog">
+    <div class="dialog">
+      <button class="dialog-close" id="dialogClose" aria-label="關閉對話框">×</button>
+      <div class="dialog-content">
+        <p id="resultText"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
