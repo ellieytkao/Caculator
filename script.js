@@ -95,3 +95,34 @@ document.addEventListener("keydown", (event) => {
     closeDialog();
   }
 });
+// =============================
+// 📝 妙麗小小備忘錄（localStorage）
+// =============================
+
+const NOTE_KEY = "hermione-note"; // 存在 localStorage 裡的 key 名稱
+const noteInput = document.getElementById("noteInput");
+const saveNoteBtn = document.getElementById("saveNoteBtn");
+const noteDisplay = document.getElementById("noteDisplay");
+
+// 保護一下：如果之後這支 JS 被用在別的頁面沒有記事本，就不會報錯
+if (noteInput && saveNoteBtn && noteDisplay) {
+  // 頁面載入時，先嘗試把以前存的內容讀出來
+  const saved = localStorage.getItem(NOTE_KEY);
+  if (saved) {
+    noteInput.value = saved;
+    noteDisplay.textContent = "目前儲存的文字：" + saved;
+  }
+
+  // 按下「儲存備忘錄」時，把文字存進 localStorage
+  saveNoteBtn.addEventListener("click", () => {
+    const text = noteInput.value.trim();
+
+    // 存進 localStorage
+    localStorage.setItem(NOTE_KEY, text);
+
+    // 更新畫面顯示
+    noteDisplay.textContent = text
+      ? "目前儲存的文字：" + text
+      : "目前還沒有儲存任何文字。";
+  });
+}
