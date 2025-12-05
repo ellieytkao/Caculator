@@ -9,67 +9,38 @@
 <body>
   <div class="page-bg"></div>
 
-<main class="app-container">
-  <section class="card">
-    <h1 class="title">妙麗歲數計算機</h1>
-    <p class="subtitle">
-      輸入狗狗生日，換算出家中小可愛的真實人類歲數 ✨
-    </p>
-
-    <div class="form-group">
-      <label for="birthDate">狗狗出生日期</label>
-      <input
-        type="date"
-        id="birthDate"
-        max=""
-        aria-label="請選擇妙麗的出生日期"
-      />
-    </div>
-
-    <div class="button-row">
-      <button id="calcBtn" class="btn primary">開始計算</button>
-      <button id="clearBtn" class="btn ghost">清除</button>
-    </div>
-
-    <!-- 📝 這裡開始是「小小記事本」區塊 -->
-    <hr class="divider" />
-
-    <section class="note-section">
-      <h2 class="note-title">📝 妙麗小小備忘錄</h2>
-      <p class="note-desc">
-        想記下妙麗的習慣、喜歡的零食、重要紀錄，都可以寫在這裡，下次回來網頁還會幫你記得 💾
+  <main class="app-container">
+    <section class="card">
+      <h1 class="title">妙麗歲數計算機</h1>
+      <p class="subtitle">
+        輸入狗狗生日，換算出家中小可愛的真實人類歲數 ✨
       </p>
 
       <div class="form-group">
-        <label for="noteInput">想記住的內容</label>
+        <label for="birthDate">狗狗出生日期</label>
         <input
-          id="noteInput"
-          type="text"
-          placeholder="例如：最喜歡雞肉口味罐頭"
-          style="width: 100%;"
+          type="date"
+          id="birthDate"
+          max=""
+          aria-label="請選擇妙麗的出生日期"
         />
       </div>
 
-      <button id="saveNoteBtn" class="btn secondary">儲存備忘錄</button>
-
-      <p id="noteDisplay" class="note-display">
-        目前還沒有儲存任何文字。
-      </p>
-    </section>
-    <!-- 📝 小小記事本區塊結束 -->
-
-    <p class="hint">
-      計算公式：人類年齡 ≈ 16 × ln(狗的年齡) + 31（狗年齡以年為單位）<br />
-      資料來源：UC San Diego 與相關研究報導。
-    </p>
-  </section>
-</main>
-
+      <div class="button-row">
+        <button id="calcBtn" class="btn primary">開始計算</button>
+        <button id="clearBtn" class="btn ghost">清除</button>
+      </div>
 
       <p class="hint">
         計算公式：人類年齡 ≈ 16 × ln(狗的年齡) + 31（狗年齡以年為單位）<br />
         資料來源：UC San Diego 與相關研究報導。
       </p>
+
+      <!-- 上次結果顯示區域 -->
+      <div class="last-result" id="lastResult">
+        <p class="last-result-title">🌿 上次計算結果</p>
+        <p class="last-result-content" id="lastResultContent"></p>
+      </div>
     </section>
   </main>
 

@@ -5,6 +5,8 @@ const clearBtn = document.getElementById("clearBtn");
 const dialog = document.getElementById("resultDialog");
 const dialogCloseBtn = document.getElementById("dialogClose");
 const resultText = document.getElementById("resultText");
+const lastResultDiv = document.getElementById("lastResult");
+const lastResultContent = document.getElementById("lastResultContent");
 
 // 把今天設定成日期輸入最大值，避免選到未來
 (function setMaxDateToToday() {
@@ -37,12 +39,55 @@ function convertDogToHumanYears(dogAgeYears) {
 }
 
 // 顯示結果的對話框
-function showResultDialog(dogAgeYears, humanAgeYears) {
+function showResultDialog(dogAgeYears, humanAgeYears, birthDate) {
   const dogAgeDisplay = dogAgeYears.toFixed(1);
   const humanAgeDisplay = humanAgeYears.toFixed(1);
 
-  resultText.textContent = `妙麗是 ${dogAgeDisplay} 歲狗狗，換算成人類大約是 ${humanAgeDisplay} 歲。`;
+  resultText.textContent = `🐕 狗狗年齡：${dogAgeDisplay} 歲\n👤 人類年齡：${humanAgeDisplay} 歲`;
   dialog.style.display = "flex";
+
+  // 保存到 localStorage
+  const resultData = {
+    birthDate: birthDate,
+    dogAge: dogAgeYears,
+    humanAge: humanAgeYears,
+    timestamp: new Date().toISOString()
+  };
+  localStorage.setItem('lastDogAgeResult', JSON.stringify(resultData));
+
+  // 更新上次結果顯示
+  updateLastResultDisplay(resultData);
+}
+
+// 更新上次結果顯示區域
+function updateLastResultDisplay(resultData) {
+  if (!resultData) return;
+  
+  const dogAgeDisplay = resultData.dogAge.toFixed(1);
+  const humanAgeDisplay = resultData.humanAge.toFixed(1);
+  const date = new Date(resultData.birthDate);
+  const formattedDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+  
+  lastResultContent.textContent = `生日：${formattedDate}\n🐕 狗狗年齡：${dogAgeDisplay} 歲\n👤 人類年齡：${humanAgeDisplay} 歲`;
+  lastResultDiv.classList.add('show');
+}
+
+// 從 localStorage 載入上次結果
+function loadLastResult() {
+  const savedData = localStorage.getItem('lastDogAgeResult');
+  if (savedData) {
+    try {
+      const resultData = JSON.parse(savedData);
+      // 恢復生日輸入
+      if (resultData.birthDate) {
+        birthDateInput.value = resultData.birthDate;
+      }
+      // 顯示上次結果
+      updateLastResultDisplay(resultData);
+    } catch (e) {
+      console.error('載入上次結果失敗:', e);
+    }
+  }
 }
 
 // 關閉對話框
@@ -71,12 +116,16 @@ calcBtn.addEventListener("click", () => {
     return;
   }
 
-  showResultDialog(dogAgeYears, humanAgeYears);
+  showResultDialog(dogAgeYears, humanAgeYears, birthValue);
 });
 
 // 按下「清除」
 clearBtn.addEventListener("click", () => {
   birthDateInput.value = "";
+  // 清除 localStorage
+  localStorage.removeItem('lastDogAgeResult');
+  // 隱藏上次結果
+  lastResultDiv.classList.remove('show');
 });
 
 // 關閉對話框事件
@@ -95,34 +144,8 @@ document.addEventListener("keydown", (event) => {
     closeDialog();
   }
 });
-// =============================
-// 📝 妙麗小小備忘錄（localStorage）
-// =============================
 
-const NOTE_KEY = "hermione-note"; // 存在 localStorage 裡的 key 名稱
-const noteInput = document.getElementById("noteInput");
-const saveNoteBtn = document.getElementById("saveNoteBtn");
-const noteDisplay = document.getElementById("noteDisplay");
-
-// 保護一下：如果之後這支 JS 被用在別的頁面沒有記事本，就不會報錯
-if (noteInput && saveNoteBtn && noteDisplay) {
-  // 頁面載入時，先嘗試把以前存的內容讀出來
-  const saved = localStorage.getItem(NOTE_KEY);
-  if (saved) {
-    noteInput.value = saved;
-    noteDisplay.textContent = "目前儲存的文字：" + saved;
-  }
-
-  // 按下「儲存備忘錄」時，把文字存進 localStorage
-  saveNoteBtn.addEventListener("click", () => {
-    const text = noteInput.value.trim();
-
-    // 存進 localStorage
-    localStorage.setItem(NOTE_KEY, text);
-
-    // 更新畫面顯示
-    noteDisplay.textContent = text
-      ? "目前儲存的文字：" + text
-      : "目前還沒有儲存任何文字。";
-  });
-}
+// 頁面載入時恢復上次結果
+window.addEventListener("DOMContentLoaded", () => {
+  loadLastResult();
+});
